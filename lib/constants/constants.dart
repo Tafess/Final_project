@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -78,4 +76,18 @@ String getMessageFromErrorCode(String errorCode) {
     default:
       return 'Login failed. Please try again';
   }
+}
+
+bool loginValidation(String email, password) {
+  if (email.isEmpty && password.isEmpty) {
+    showMessage('Both fields are empty. Please try again');
+    return false;
+  } else if (email.isEmpty) {
+    showMessage('Email field is empty. Please try again');
+    return false;
+  } else if (password.isEmpty) {
+    showMessage('Password field is empty. Please try again');
+    return false;
+  }
+  return true;
 }

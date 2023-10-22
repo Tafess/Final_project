@@ -1,9 +1,13 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
+import 'package:belkis_marketplace/constants/constants.dart';
 import 'package:belkis_marketplace/constants/routes.dart';
+import 'package:belkis_marketplace/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:belkis_marketplace/screens/auth_ui/sign_up/sign_up.dart';
+import 'package:belkis_marketplace/screens/home/home.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
 import 'package:belkis_marketplace/widgets/top_titles/top_titles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +20,8 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
   bool isShowPassword = false;
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,9 +80,19 @@ class _LoginState extends State<Login> {
                 height: 50,
               ),
               PrimaryButton(
-                title: 'Login',
-                onPressed: () {},
-              ),
+                  title: 'Login',
+                  onPressed: () async {
+                    bool isValidate =
+                        loginValidation(email.text, password.text);
+                    if (isValidate) {
+                      bool islogined = await FirebaseAuthHelper.instance
+                          .login(email.text, password.text, context);
+                      if (islogined) {
+                        Routes.instance
+                            .push(widget: const Home(), context: context);
+                      }
+                    }
+                  }),
               SizedBox(
                 height: 20,
               ),
