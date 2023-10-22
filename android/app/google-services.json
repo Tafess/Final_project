@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "201683354793",
+    "project_id": "belkis-market",
+    "storage_bucket": "belkis-market.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:201683354793:android:abb551107c5c2b28cf55b8",
+        "android_client_info": {
+          "package_name": "com.example.belkis_marketplace"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6fzAntXZ_vn3520m5sqtrd76IRb-q6HM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
