@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:belkis_marketplace/constants/constants.dart';
 import 'package:belkis_marketplace/constants/routes.dart';
+import 'package:belkis_marketplace/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:belkis_marketplace/screens/auth_ui/login/login.dart';
+import 'package:belkis_marketplace/screens/home/home.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
 import 'package:belkis_marketplace/widgets/top_titles/top_titles.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,6 +19,10 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool isShowPassword = false;
+  TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
+  TextEditingController phone = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +40,7 @@ class _SignUpState extends State<SignUp> {
                 height: 30,
               ),
               TextFormField(
+                controller: name,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   hintText: 'Name ',
@@ -48,6 +56,7 @@ class _SignUpState extends State<SignUp> {
                 height: 30,
               ),
               TextFormField(
+                controller: email,
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: 'E-mail ',
@@ -63,6 +72,7 @@ class _SignUpState extends State<SignUp> {
                 height: 30,
               ),
               TextFormField(
+                controller: phone,
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: 'Phone Number',
@@ -78,6 +88,7 @@ class _SignUpState extends State<SignUp> {
                 height: 30,
               ),
               TextFormField(
+                controller: password,
                 obscureText: isShowPassword,
                 decoration: InputDecoration(
                   hintText: 'Password',
@@ -107,7 +118,18 @@ class _SignUpState extends State<SignUp> {
               ),
               PrimaryButton(
                 title: 'Create an Account',
-                onPressed: () {},
+                onPressed: () async {
+                  bool isValidate = signValidation(
+                      email.text, password.text, name.text, phone.text);
+                  if (isValidate) {
+                    bool islogined = await FirebaseAuthHelper.instance
+                        .signUp(email.text, password.text, context);
+                    if (islogined) {
+                      Routes.instance
+                          .push(widget: Home(), context: context);
+                    }
+                  }
+                },
               ),
               SizedBox(
                 height: 20,

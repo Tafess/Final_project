@@ -38,6 +38,7 @@ class _LoginState extends State<Login> {
                 height: 50,
               ),
               TextFormField(
+                controller: email,
                 decoration: InputDecoration(
                   hintText: 'E-mail ',
                   labelText: 'ENTER YOUR E-MAIL ADDRESS',
@@ -52,6 +53,7 @@ class _LoginState extends State<Login> {
                 height: 50,
               ),
               TextFormField(
+                controller: password,
                 obscureText: isShowPassword,
                 decoration: InputDecoration(
                   hintText: 'Password',

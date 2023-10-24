@@ -9,7 +9,8 @@ class TopTitles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, 
+    children: [
       const SizedBox(
         height: kToolbarHeight,
       ),

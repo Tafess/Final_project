@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -6,35 +8,42 @@ void showMessage(String message) {
     msg: message,
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.CENTER,
-    timeInSecForIosWeb: 1,
-    backgroundColor: Colors.green,
+    // timeInSecForIosWeb: 1,
+    backgroundColor: Colors.red,
     textColor: Colors.white,
     fontSize: 16.0,
   );
 }
 
 ShowLoderDialog(BuildContext context) {
-  AlertDialog alert = AlertDialog();
-  context:
-  Builder(builder: (context) {
-    return SizedBox(
-      width: 100,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const CircularProgressIndicator(
-            color: Colors.red,
-          ),
-          SizedBox(
-            height: 18,
-          ),
-          Container(
-            margin: const EdgeInsets.only(left: 7),
-          )
-        ],
-      ),
-    );
-  });
+  AlertDialog alert = AlertDialog(
+    content: Builder(builder: (context) {
+      return SizedBox(
+        width: 100,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(
+              color: Colors.red,
+            ),
+            const SizedBox(
+              height: 18,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 7),
+              child: const Text(
+                'Loading...',
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ],
+        ),
+      );
+    }),
+  );
 
   showDialog(
       barrierDismissible: false,
@@ -78,16 +87,38 @@ String getMessageFromErrorCode(String errorCode) {
   }
 }
 
-bool loginValidation(String email, password) {
+bool loginValidation(String email, String password) {
   if (email.isEmpty && password.isEmpty) {
-    showMessage('Both fields are empty. Please try again');
+    showMessage('Both fields are empty');
     return false;
   } else if (email.isEmpty) {
-    showMessage('Email field is empty. Please try again');
+    showMessage('Email field is empty');
     return false;
   } else if (password.isEmpty) {
-    showMessage('Password field is empty. Please try again');
+    showMessage('Password field is empty');
     return false;
+  } else {
+    return true;
   }
-  return true;
+}
+
+bool signValidation(String email, String password, String name, String phone) {
+  if (email.isEmpty && password.isEmpty && name.isEmpty && phone.isEmpty) {
+    showMessage('All fields are empty');
+    return false;
+  } else if (email.isEmpty) {
+    showMessage('Email field is empty');
+    return false;
+  } else if (password.isEmpty) {
+    showMessage('Password field is empty');
+    return false;
+  } else if (name.isEmpty) {
+    showMessage('Name field is empty');
+    return false;
+  } else if (phone.isEmpty) {
+    showMessage('Phone field is empty');
+    return false;
+  } else {
+    return true;
+  }
 }
