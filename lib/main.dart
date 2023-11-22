@@ -6,6 +6,7 @@ import 'package:belkis_marketplace/firebase_helper/firebase_auth_helper/firebase
 import 'package:belkis_marketplace/provider/app_provider.dart';
 import 'package:belkis_marketplace/screens/auth_ui/login/welcome.dart';
 import 'package:belkis_marketplace/screens/home/home.dart';
+import 'package:belkis_marketplace/widgets/bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 //import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
             stream: FirebaseAuthHelper.instance.getAuthChange,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                return const Home();
+                return const CustomBottomBar();
               } else {
                 return const Welcome();
               }

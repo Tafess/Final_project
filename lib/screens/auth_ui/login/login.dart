@@ -5,6 +5,7 @@ import 'package:belkis_marketplace/constants/routes.dart';
 import 'package:belkis_marketplace/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:belkis_marketplace/screens/auth_ui/sign_up/sign_up.dart';
 import 'package:belkis_marketplace/screens/home/home.dart';
+import 'package:belkis_marketplace/widgets/bottom_bar.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
 import 'package:belkis_marketplace/widgets/top_titles/top_titles.dart';
 import 'package:flutter/cupertino.dart';
@@ -88,8 +89,8 @@ class _LoginState extends State<Login> {
                       bool islogined = await FirebaseAuthHelper.instance
                           .login(email.text, password.text, context);
                       if (islogined) {
-                        Routes.instance
-                            .push(widget: const Home(), context: context);
+                        Routes.instance.pushAndRemoveUntil(
+                            widget: CustomBottomBar(), context: context);
                       }
                     }
                   }),

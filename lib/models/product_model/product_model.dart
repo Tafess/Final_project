@@ -34,7 +34,8 @@ class ProductModel {
         //description: json["description"] == null ? null : json["description"],
         status: json["status"],
         isFavorite: false,
-        description: 'description',
+        description:
+            'description discription discription status status status status status status status status status status status status status status status status status status status status status status status status status status status status status',
         quantity: json["quantity"],
       );
   Map<String, dynamic> toJson() => {

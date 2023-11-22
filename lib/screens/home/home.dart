@@ -2,12 +2,14 @@ import 'package:belkis_marketplace/constants/routes.dart';
 import 'package:belkis_marketplace/firebase_helper/firebase_firestore_helper/firebase_firestore_helper.dart';
 import 'package:belkis_marketplace/models/product_model/category_model/catagory_model.dart';
 import 'package:belkis_marketplace/models/product_model/product_model.dart';
+import 'package:belkis_marketplace/provider/app_provider.dart';
 import 'package:belkis_marketplace/screens/category_view/category_view.dart';
 import 'package:belkis_marketplace/screens/home/product_details/product_details.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
 import 'package:belkis_marketplace/widgets/top_titles/top_titles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -23,6 +25,8 @@ class _HomeState extends State<Home> {
 
   @override
   void initState() {
+    AppProvider appProvider = Provider.of<AppProvider>(context, listen: false);
+    appProvider.getUserInfoFirebase();
     getCategoyList();
     // getBestProducts();
     super.initState();
@@ -182,7 +186,7 @@ class _HomeState extends State<Home> {
                                   : Padding(
                                       padding: const EdgeInsets.all(12.0),
                                       child: GridView.builder(
-                                          padding: EdgeInsets.zero,
+                                          padding: EdgeInsets.only(bottom: 20),
                                           shrinkWrap: true,
                                           primary: false,
                                           itemCount: productModelList.length,

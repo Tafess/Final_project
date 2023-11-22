@@ -5,6 +5,7 @@ import 'package:belkis_marketplace/constants/routes.dart';
 import 'package:belkis_marketplace/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:belkis_marketplace/screens/auth_ui/login/login.dart';
 import 'package:belkis_marketplace/screens/home/home.dart';
+import 'package:belkis_marketplace/widgets/bottom_bar.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
 import 'package:belkis_marketplace/widgets/top_titles/top_titles.dart';
 import 'package:flutter/cupertino.dart';
@@ -117,16 +118,16 @@ class _SignUpState extends State<SignUp> {
                 height: 50,
               ),
               PrimaryButton(
-                title: 'Create an Account',
+                title: 'Register',
                 onPressed: () async {
                   bool isValidate = signValidation(
                       email.text, password.text, name.text, phone.text);
                   if (isValidate) {
                     bool islogined = await FirebaseAuthHelper.instance
-                        .signUp(email.text, password.text, context);
+                        .signUp(name.text, email.text, password.text, context);
                     if (islogined) {
-                      Routes.instance
-                          .push(widget: Home(), context: context);
+                      Routes.instance.pushAndRemoveUntil(
+                          widget: CustomBottomBar(), context: context);
                     }
                   }
                 },

@@ -25,6 +25,9 @@ class _SIngleCartItemState extends State<SIngleCartItem> {
 
   @override
   Widget build(BuildContext context) {
+    AppProvider appProvider = Provider.of<AppProvider>(
+      context,
+    );
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
@@ -108,8 +111,28 @@ class _SIngleCartItemState extends State<SIngleCartItem> {
                                   ),
                                   CupertinoButton(
                                       padding: EdgeInsets.zero,
-                                      onPressed: () {},
-                                      child: const Text('Add to wishlist'))
+                                      onPressed: () {
+                                        if (!appProvider.getFavoriteProductList
+                                            .contains(widget.singleProduct)) {
+                                          appProvider.addToFavoriteproduct(
+                                              widget.singleProduct);
+                                          showMessage(
+                                              'Product added to favorites');
+                                        } else {
+                                          appProvider.removeFavoriteproduct(
+                                              widget.singleProduct);
+                                          showMessage(
+                                              'Product removed from favorites');
+                                        }
+                                      },
+                                      child: Text(
+                                        appProvider.getFavoriteProductList
+                                                .contains(widget.singleProduct)
+                                            ? 'Remove to Wishlist'
+                                            : 'Add to Wishlist',
+                                        style:
+                                            const TextStyle(color: Colors.red),
+                                      )),
                                 ],
                               ),
                               Text(
@@ -126,8 +149,6 @@ class _SIngleCartItemState extends State<SIngleCartItem> {
                                 ),
                               ),
                               onPressed: () {
-                                AppProvider appProvider =
-                                    Provider.of(context, listen: false);
                                 appProvider
                                     .removeCartproduct(widget.singleProduct);
                                 showMessage('Removed from cart');
