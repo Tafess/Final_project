@@ -15,7 +15,7 @@ class FirebaseAuthHelper {
       ShowLoderDialog(context);
 
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Routes.instance.pushAndRemoveUntil(widget: Home(), context: context);
+      Routes.instance.pushAndRemoveUntil(widget:  const Home(), context: context);
       Navigator.of(context).pop();
       return true;
     } on FirebaseAuthException catch (error) {
@@ -31,7 +31,7 @@ class FirebaseAuthHelper {
 
       await _auth.createUserWithEmailAndPassword(
           email: email, password: Password);
-      Routes.instance.pushAndRemoveUntil(widget: Home(), context: context);
+      Routes.instance.pushAndRemoveUntil(widget: const Home(), context: context);
       Navigator.of(context).pop();
       return true;
     } on FirebaseAuthException catch (error) {

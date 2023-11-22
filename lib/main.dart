@@ -3,11 +3,13 @@
 import 'package:belkis_marketplace/constants/firebase_options/firebase_options.dart';
 import 'package:belkis_marketplace/constants/theme.dart';
 import 'package:belkis_marketplace/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
+import 'package:belkis_marketplace/provider/app_provider.dart';
 import 'package:belkis_marketplace/screens/auth_ui/login/welcome.dart';
 import 'package:belkis_marketplace/screens/home/home.dart';
 import 'package:firebase_core/firebase_core.dart';
 //import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,19 +25,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Belkis Marketplace',
-      theme: themeData,
-      home: StreamBuilder(
-          stream: FirebaseAuthHelper.instance.getAuthChange,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return const Home();
-            } else {
-              return Welcome();
-            }
-          }),
+    return ChangeNotifierProvider(
+      create: (context) => AppProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Belkis ',
+        theme: themeData,
+        home: StreamBuilder(
+            stream: FirebaseAuthHelper.instance.getAuthChange,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return const Home();
+              } else {
+                return const Welcome();
+              }
+            }),
+      ),
     );
   }
 }

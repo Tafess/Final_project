@@ -1,3 +1,4 @@
+import 'package:belkis_marketplace/constants/theme.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -8,14 +9,27 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 45,
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        child: Text(
-          title,
-        ),
-      ),
-    );
+        height: 60,
+        width: MediaQuery.of(context).size.width / 2,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.blue),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(
+                    10.0), // Adjust the border radius as needed
+                side: const BorderSide(
+                    color: Colors.white,
+                    width: 2.0), // Customize border color and width
+              ),
+            ),
+          ),
+          child: Text(
+            title,
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ));
   }
 }

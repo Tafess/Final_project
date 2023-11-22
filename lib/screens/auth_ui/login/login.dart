@@ -7,7 +7,6 @@ import 'package:belkis_marketplace/screens/auth_ui/sign_up/sign_up.dart';
 import 'package:belkis_marketplace/screens/home/home.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
 import 'package:belkis_marketplace/widgets/top_titles/top_titles.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -32,8 +31,7 @@ class _LoginState extends State<Login> {
           child: Column(
             children: [
               //Icon(Icons.arrow_back),
-              TopTitles(
-                  title: 'Login', subtitle: 'Welcome back to belkis Market'),
+              TopTitles(title: 'Login', subtitle: 'Welcome back '),
               SizedBox(
                 height: 50,
               ),
@@ -45,7 +43,7 @@ class _LoginState extends State<Login> {
                   labelStyle: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
-                      fontSize: 20),
+                      fontSize: 14),
                   prefixIcon: Icon(Icons.email_outlined),
                 ),
               ),
