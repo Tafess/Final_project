@@ -1,5 +1,6 @@
 import 'package:belkis_marketplace/constants/constants.dart';
 import 'package:belkis_marketplace/constants/routes.dart';
+import 'package:belkis_marketplace/screens/check_out.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,7 @@ class ProductDetails extends StatefulWidget {
       : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProductDetailsState createState() => _ProductDetailsState();
 }
 
@@ -151,7 +153,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           ),
           const SizedBox(height: 50),
           Text('Total price: ${widget.singleProduct.price * quantity}'),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -176,8 +178,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                 width: 100,
                 child: PrimaryButton(
                   onPressed: () {
-                    Routes.instance
-                        .push(widget: FavoriteScreen(), context: context);
+                    ProductModel productModel =
+                        widget.singleProduct.copyWith(quantity: quantity);
+                    Routes.instance.push(
+                        widget: CheckOutScreen(
+                          singleProduct: productModel,
+                        ),
+                        context: context);
                   },
                   title: 'BUY',
                 ),

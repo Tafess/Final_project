@@ -1,11 +1,15 @@
+import 'package:belkis_marketplace/constants/constants.dart';
 import 'package:belkis_marketplace/firebase_helper/firebase_firestore_helper/firebase_firestore_helper.dart';
+import 'package:belkis_marketplace/firebase_helper/firebase_storage_helper.dart';
 import 'package:belkis_marketplace/models/product_model/product_model.dart';
 import 'package:belkis_marketplace/models/user_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AppProvider with ChangeNotifier {
   //////// cart list
-  List<ProductModel> _cartProductList = [];
+  final List<ProductModel> _cartProductList = [];
+  final List<ProductModel> _buyProductList = [];
   UserModel? _userModel;
 
   UserModel get getUserInformation => _userModel!;
@@ -25,7 +29,7 @@ class AppProvider with ChangeNotifier {
   //// Favorite /////
   ///
   ///
-  List<ProductModel> _favoriteProductList = [];
+  final List<ProductModel> _favoriteProductList = [];
 
   void addToFavoriteproduct(ProductModel productModel) {
     _favoriteProductList
@@ -41,10 +45,90 @@ class AppProvider with ChangeNotifier {
 
   List<ProductModel> get getFavoriteProductList => _favoriteProductList;
 
+  //////////// user informaation
+  ///
+
   void getUserInfoFirebase() async {
     _userModel = await FirebaseFirestoreHelper.instance.getUserInformation();
     notifyListeners();
   }
 
-  //////////// user informaation
+  void updateUserInfoFirebase(
+      BuildContext context, UserModel userModel, file) async {
+    if (file == null) {
+      ShowLoderDialog(context);
+      _userModel = userModel;
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(_userModel!.id)
+          .set(_userModel!.toJson());
+      Navigator.of(context, rootNavigator: true).pop();
+      Navigator.of(context).pop();
+    } else {
+      ShowLoderDialog(context);
+      String imageUrl =
+          await FirebaseStorageHelper.instance.uploadUserImage(file);
+      _userModel = userModel.copyWith(image: imageUrl);
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(_userModel!.id)
+          .set(_userModel!.toJson());
+
+      Navigator.of(context, rootNavigator: true).pop();
+      Navigator.of(context).pop();
+    }
+    showMessage('succesfully updated');
+    notifyListeners();
+  }
+
+  /////       Total price  ///////////
+
+  double totalPrice() {
+    double totalPrice = 0.0;
+    for (var element in _cartProductList) {
+      totalPrice += element.price * element.quantity!;
+    }
+
+    return totalPrice;
+  }
+
+  double totalPriceBuyProductList() {
+    double totalPrice = 0.0;
+    for (var element in _buyProductList) {
+      totalPrice += element.price * element.quantity!;
+    }
+
+    return totalPrice;
+  }
+
+  void updateQuantity(ProductModel productModel, int quantity) {
+    int index = _cartProductList.indexOf(productModel);
+    _cartProductList[index].quantity = quantity;
+    notifyListeners();
+  }
+
+  ///////////////////  Buy product ///////////////////////
+  ///
+
+  void addBuyProduct(ProductModel model) {
+    _buyProductList.add(model);
+    notifyListeners();
+  }
+
+  void addBuyProductCartList() {
+    _buyProductList.addAll(_cartProductList);
+    notifyListeners();
+  }
+
+  void clearBuyProduct() {
+    _buyProductList.clear();
+    notifyListeners();
+  }
+
+  void clearCart() {
+    _cartProductList.clear();
+    notifyListeners();
+  }
+
+  List<ProductModel> get getBuyproductList => _buyProductList;
 }

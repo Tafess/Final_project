@@ -14,11 +14,11 @@ class DefaultFirebaseConfig {
       );
     } else if (Platform.isAndroid) {
       return const FirebaseOptions(
-        appId: '1:201683354793:android:abb551107c5c2b28cf55b8',
-        apiKey: 'AIzaSyB6fzAntXZ_vn3520m5sqtrd76IRb-q6HM',
-        projectId: 'belkis-market',
-        messagingSenderId: '201683354793',
-      );
+          appId: '1:201683354793:android:abb551107c5c2b28cf55b8',
+          apiKey: 'AIzaSyB6fzAntXZ_vn3520m5sqtrd76IRb-q6HM',
+          projectId: 'belkis-market',
+          messagingSenderId: '201683354793',
+          storageBucket: 'belkis-market.appspot.com');
     } else {
       throw UnsupportedError("Unsupported platform");
     }

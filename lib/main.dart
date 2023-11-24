@@ -5,15 +5,18 @@ import 'package:belkis_marketplace/constants/theme.dart';
 import 'package:belkis_marketplace/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:belkis_marketplace/provider/app_provider.dart';
 import 'package:belkis_marketplace/screens/auth_ui/login/welcome.dart';
-import 'package:belkis_marketplace/screens/home/home.dart';
+
 import 'package:belkis_marketplace/widgets/bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 //import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Stripe.publishableKey =
+      'pk_test_51OFnrbL5s11I9QDMOFtPyDVhgwlglgvExwrsPoeZwvmFJa3hv6kdqMY06muBIWP3OgnqOGeQpMwmzOocYcWECL8k00hpdzUzvM';
   await Firebase.initializeApp(
     options: DefaultFirebaseConfig.platformOptions,
   );

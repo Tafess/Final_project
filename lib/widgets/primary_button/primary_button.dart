@@ -1,4 +1,3 @@
-import 'package:belkis_marketplace/constants/theme.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {

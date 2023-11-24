@@ -35,8 +35,9 @@ class _SignUpState extends State<SignUp> {
             children: [
               //Icon(Icons.arrow_back),
               TopTitles(
-                  title: 'Create Account',
-                  subtitle: 'Welcome to belkis Marketplace "your market"'),
+                title: 'Create Account',
+                subtitle: 'Welcome ',
+              ),
               SizedBox(
                 height: 30,
               ),

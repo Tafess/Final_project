@@ -4,6 +4,7 @@ import 'package:belkis_marketplace/models/product_model/category_model/catagory_
 import 'package:belkis_marketplace/models/product_model/product_model.dart';
 import 'package:belkis_marketplace/provider/app_provider.dart';
 import 'package:belkis_marketplace/screens/category_view/category_view.dart';
+import 'package:belkis_marketplace/screens/check_out.dart';
 import 'package:belkis_marketplace/screens/home/product_details/product_details.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
 import 'package:belkis_marketplace/widgets/top_titles/top_titles.dart';
@@ -36,13 +37,25 @@ class _HomeState extends State<Home> {
     setState(() {
       isLoding = true;
     });
-
+    FirebaseFirestoreHelper.instance.updateTokenFromFirebase();
     categoriesList = await FirebaseFirestoreHelper.instance.getCategories();
     productModelList = await FirebaseFirestoreHelper.instance.getBestProducts();
     productModelList.shuffle();
-    setState(() {
-      isLoding = false;
-    });
+    if (mounted) {
+      setState(() {
+        isLoding = false;
+      });
+    }
+  }
+
+  TextEditingController search = TextEditingController();
+  List<ProductModel> searchList = [];
+  void searchProduct(String value) {
+    searchList = productModelList
+        .where((element) =>
+            element.name.toLowerCase().contains(value.toLowerCase()))
+        .toList();
+    setState(() {});
   }
 
   void getBestProducts() async {
@@ -85,12 +98,17 @@ class _HomeState extends State<Home> {
                               Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: TextFormField(
+                                  controller: search,
+                                  onChanged: (String value) {
+                                    searchProduct(value);
+                                  },
                                   decoration: const InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10.0)),
                                     ),
-                                    labelText: 'Search...',
+                                    hintStyle: TextStyle(color: Colors.grey),
+                                    hintText: 'Search products ...',
                                     prefixIcon: Icon(Icons.search),
                                   ),
                                 ),
@@ -168,7 +186,7 @@ class _HomeState extends State<Home> {
                                             .toList(),
                                       ),
                                     ),
-                              Divider(),
+                              const Divider(),
                               const SizedBox(
                                 height: 10,
                               ),
@@ -179,92 +197,200 @@ class _HomeState extends State<Home> {
                                     fontWeight: FontWeight.bold,
                                     color: Colors.blue),
                               ),
-                              productModelList.isEmpty
+                              isSearched()
                                   ? const Center(
-                                      child: Text('Best product is Empity'),
+                                      child: Text('No such product found'),
                                     )
-                                  : Padding(
-                                      padding: const EdgeInsets.all(12.0),
-                                      child: GridView.builder(
-                                          padding: EdgeInsets.only(bottom: 20),
-                                          shrinkWrap: true,
-                                          primary: false,
-                                          itemCount: productModelList.length,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                                  childAspectRatio: 0.8,
-                                                  mainAxisSpacing: 20,
-                                                  crossAxisSpacing: 20,
-                                                  crossAxisCount: 2),
-                                          itemBuilder: (ctx, index) {
-                                            ProductModel singleProduct =
-                                                productModelList[index];
-                                            return Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                color: Colors.white,
-                                              ),
-                                              child: InkWell(
-                                                onTap: () {
-                                                  Routes.instance.push(
-                                                      widget: ProductDetails(
-                                                          singleProduct:
-                                                              singleProduct),
-                                                      context: context);
-                                                },
-                                                child: Column(children: [
-                                                  SizedBox(
-                                                    height: 70,
-                                                    width: double.infinity,
-                                                    child: Image.network(
-                                                      singleProduct.image,
-                                                      fit: BoxFit.cover,
-                                                    ),
+                                  : searchList.isNotEmpty
+                                      ? Padding(
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: GridView.builder(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 20),
+                                              shrinkWrap: true,
+                                              primary: false,
+                                              itemCount: searchList.length,
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                      childAspectRatio: 0.8,
+                                                      mainAxisSpacing: 20,
+                                                      crossAxisSpacing: 20,
+                                                      crossAxisCount: 2),
+                                              itemBuilder: (ctx, index) {
+                                                ProductModel singleProduct =
+                                                    searchList[index];
+                                                return Container(
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            20),
+                                                    color: Colors.white,
                                                   ),
-                                                  const SizedBox(
-                                                    height: 12,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Routes.instance.push(
+                                                          widget: ProductDetails(
+                                                              singleProduct:
+                                                                  singleProduct),
+                                                          context: context);
+                                                    },
+                                                    child: Column(children: [
+                                                      SizedBox(
+                                                        height: 70,
+                                                        width: double.infinity,
+                                                        child: Image.network(
+                                                          singleProduct.image,
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 12,
+                                                      ),
+                                                      Text(
+                                                        singleProduct.name,
+                                                        style: const TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Text(
+                                                        'ETB ${singleProduct.price.toStringAsFixed(2)}',
+                                                        style: const TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      const SizedBox(
+                                                        height: 6.0,
+                                                      ),
+                                                      SizedBox(
+                                                        height: 40,
+                                                        width: 100,
+                                                        child: PrimaryButton(
+                                                          onPressed: () {
+                                                            Routes.instance.push(
+                                                                widget: ProductDetails(
+                                                                    singleProduct:
+                                                                        singleProduct),
+                                                                context:
+                                                                    context);
+                                                            // Routes.instance.push(
+                                                            //     widget:
+                                                            //         ProductDetails,
+                                                            //     context: context);
+                                                          },
+                                                          title: 'Buy',
+                                                        ),
+                                                      ), // onPressed: () {}, child: Text("Buy"))
+                                                    ]),
                                                   ),
-                                                  Text(
-                                                    singleProduct.name,
-                                                    style: const TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Text(
-                                                    'ETB ${singleProduct.price.toStringAsFixed(2)}',
-                                                    style: const TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  const SizedBox(
-                                                    height: 6.0,
-                                                  ),
-                                                  SizedBox(
-                                                    height: 40,
-                                                    width: 100,
-                                                    child: PrimaryButton(
-                                                      onPressed: () {
-                                                        Routes.instance.push(
-                                                            widget: ProductDetails(
-                                                                singleProduct:
-                                                                    singleProduct),
-                                                            context: context);
-                                                        // Routes.instance.push(
-                                                        //     widget:
-                                                        //         ProductDetails,
-                                                        //     context: context);
-                                                      },
-                                                      title: 'Buy',
-                                                    ),
-                                                  ), // onPressed: () {}, child: Text("Buy"))
-                                                ]),
-                                              ),
-                                            );
-                                          }),
-                                    ),
+                                                );
+                                              }),
+                                        )
+                                      : productModelList.isEmpty
+                                          ? const Center(
+                                              child: Text(
+                                                  'Best product is Empity'),
+                                            )
+                                          : Padding(
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              child: GridView.builder(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 20),
+                                                  shrinkWrap: true,
+                                                  primary: false,
+                                                  itemCount:
+                                                      productModelList.length,
+                                                  gridDelegate:
+                                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                                          childAspectRatio: 0.8,
+                                                          mainAxisSpacing: 20,
+                                                          crossAxisSpacing: 20,
+                                                          crossAxisCount: 2),
+                                                  itemBuilder: (ctx, index) {
+                                                    ProductModel singleProduct =
+                                                        productModelList[index];
+                                                    return Container(
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20),
+                                                        color: Colors.white,
+                                                      ),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          Routes.instance.push(
+                                                              widget: ProductDetails(
+                                                                  singleProduct:
+                                                                      singleProduct),
+                                                              context: context);
+                                                        },
+                                                        child:
+                                                            Column(children: [
+                                                          SizedBox(
+                                                            height: 70,
+                                                            width:
+                                                                double.infinity,
+                                                            child:
+                                                                Image.network(
+                                                              singleProduct
+                                                                  .image,
+                                                              fit: BoxFit.cover,
+                                                            ),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 12,
+                                                          ),
+                                                          Text(
+                                                            singleProduct.name,
+                                                            style: const TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          Text(
+                                                            'ETB ${singleProduct.price.toStringAsFixed(2)}',
+                                                            style: const TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold),
+                                                          ),
+                                                          const SizedBox(
+                                                            height: 6.0,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 40,
+                                                            width: 100,
+                                                            child:
+                                                                PrimaryButton(
+                                                              onPressed: () {
+                                                                Routes.instance.push(
+                                                                    widget: ProductDetails(
+                                                                        singleProduct:
+                                                                            singleProduct),
+                                                                    context:
+                                                                        context);
+                                                                Routes.instance.push(
+                                                                    widget: CheckOutScreen(
+                                                                        singleProduct:
+                                                                            singleProduct),
+                                                                    context:
+                                                                        context);
+                                                              },
+                                                              title: 'Buy',
+                                                            ),
+                                                          ), // onPressed: () {}, child: Text("Buy"))
+                                                        ]),
+                                                      ),
+                                                    );
+                                                  }),
+                                            ),
                             ]),
                       ),
                     ]),
@@ -272,47 +398,12 @@ class _HomeState extends State<Home> {
             ),
     );
   }
-}
 
-// //List<ProductModel> bestProducts = [
-//   ProductModel(
-//       image: "assets/images/vegcart.jpg",
-//       id: "1",
-//       name: "Cosmotics",
-//       price: "100",
-//       description: "This is the beautiful product",
-//       status: 'Pending',
-//       isFavorite: false),
-//   ProductModel(
-//       image: "assets/images/cosmo1.jpg",
-//       id: "2",
-//       name: "Cosmotics",
-//       price: "100",
-//       description: "This is the beautiful product",
-//       status: 'Pending',
-//       isFavorite: false),
-//   ProductModel(
-//       image: "assets/images/cosmo2.jpg",
-//       id: "3",
-//       name: "Cosmotics",
-//       price: "100",
-//       description: "This is the beautiful product",
-//       status: 'Pending',
-//       isFavorite: false),
-//   ProductModel(
-//       image: "assets/images/cosmo3.jpg",
-//       id: "4",
-//       name: "Cosmotics",
-//       price: "100",
-//       description: "This is the beautiful product",
-//       status: 'Pending',
-//       isFavorite: false),
-//   ProductModel(
-//       image: "assets/images/Cosmetics.jpg",
-//       id: "5",
-//       name: "Cosmotics",
-//       price: "100",
-//       description: "This is the beautiful product",
-//       status: 'Pending',
-//       isFavorite: false),
-// ];
+  bool isSearched() {
+    if (search.text.isNotEmpty && searchList.isEmpty) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}

@@ -1,9 +1,15 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:belkis_marketplace/constants/constants.dart';
+import 'package:belkis_marketplace/models/order_model.dart';
 import 'package:belkis_marketplace/models/product_model/category_model/catagory_model.dart';
 import 'package:belkis_marketplace/models/product_model/product_model.dart';
 import 'package:belkis_marketplace/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 
 class FirebaseFirestoreHelper {
   static FirebaseFirestoreHelper instance = FirebaseFirestoreHelper();
@@ -61,5 +67,81 @@ class FirebaseFirestoreHelper {
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .get();
     return UserModel.fromJson(querySnapshot.data()!);
+  }
+
+  Future<bool> uploadOrderedProductFirebase(
+      List<ProductModel> list, BuildContext context, String payment) async {
+    try {
+      ShowLoderDialog(context);
+      double totalPrice = 0.0;
+      for (var element in list) {
+        totalPrice += element.price * element.quantity!;
+      }
+      DocumentReference documentReference = await _firebaseFirestore
+          .collection('userOrders')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .collection('orders')
+          .doc();
+      DocumentReference admin = _firebaseFirestore.collection('orders').doc();
+
+      admin.set({
+        'products': list.map((e) => e.toJson()),
+        'status': 'pending',
+        'totalprice': totalPrice,
+        'payment': payment,
+        'orderId': admin.id,
+      });
+
+      documentReference.set({
+        'products': list.map((e) => e.toJson()),
+        'status': 'pending',
+        'totalprice': totalPrice,
+        'payment': payment,
+        'orderId': documentReference.id,
+      });
+      showMessage('Ordered Successfully');
+      Navigator.of(context, rootNavigator: true).pop();
+
+      return true;
+    } catch (e) {
+      showMessage(e.toString());
+      Navigator.of(context, rootNavigator: true).pop();
+
+      return false;
+    }
+  }
+
+  ///////// get order user //////
+  ///
+
+  Future<List<OrderModel>> getUserOrder() async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot =
+          await _firebaseFirestore
+              .collection('userOrders')
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .collection('orders')
+              .get();
+
+      List<OrderModel> orderList = querySnapshot.docs
+          .map((element) => OrderModel.fromJson(element.data()))
+          .toList();
+
+      return orderList;
+    } catch (error) {
+      showMessage(error.toString());
+
+      return [];
+    }
+  }
+
+  void updateTokenFromFirebase() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    if (token != null) {
+      await _firebaseFirestore
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .update({'notificationToken': token});
+    }
   }
 }

@@ -4,8 +4,7 @@ import 'package:belkis_marketplace/models/product_model/category_model/catagory_
 import 'package:belkis_marketplace/models/product_model/product_model.dart';
 import 'package:belkis_marketplace/screens/home/product_details/product_details.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
-import 'package:belkis_marketplace/widgets/top_titles/top_titles.dart';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class CategoryView extends StatefulWidget {
@@ -98,9 +97,11 @@ class _CategoryViewState extends State<CategoryView> {
                                           child: SizedBox(
                                             height: 100,
                                             width: double.infinity,
-                                            child: Image.network(
-                                              singleProduct.image,
-                                              fit: BoxFit.cover,
+                                            child: ClipOval(
+                                              child: Image.network(
+                                                singleProduct.image,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
                                         ),

@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
 
 ThemeData themeData = ThemeData(
-  scaffoldBackgroundColor: Colors.grey.shade100,
+  scaffoldBackgroundColor: Colors.grey.shade200,
   primaryColor: Colors.blue,
   primarySwatch: Colors.green,
   canvasColor: Colors.red,
 
   ////////////////////////////////////////////////
   inputDecorationTheme: InputDecorationTheme(
-    border: outlineInputBorder,
-    errorBorder: outlineInputBorder,
-    enabledBorder: outlineInputBorder,
-    focusedBorder: outlineInputBorder,
-    disabledBorder: outlineInputBorder,
-    prefixIconColor: Colors.blue,
-    suffixIconColor: Colors.green,
-  ),
+      border: outlineInputBorder,
+      errorBorder: outlineInputBorder,
+      enabledBorder: outlineInputBorder,
+      focusedBorder: outlineInputBorder,
+      disabledBorder: outlineInputBorder,
+      prefixIconColor: Colors.blue,
+      suffixIconColor: Colors.green,
+      fillColor: Colors.white,
+      filled: true),
 
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(

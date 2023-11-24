@@ -49,7 +49,6 @@ class ProductModel {
         "quantity": quantity
       };
 
-  @override
   ProductModel copyWith({
     int? quantity,
   }) =>

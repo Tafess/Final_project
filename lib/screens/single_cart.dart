@@ -33,7 +33,7 @@ class _SIngleCartItemState extends State<SIngleCartItem> {
       child: Container(
         height: 150,
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.blue, width: 3),
+            border: Border.all(color: Colors.grey, width: 1),
             borderRadius: BorderRadius.circular(10),
             color: Colors.white),
         child: Column(
@@ -43,7 +43,7 @@ class _SIngleCartItemState extends State<SIngleCartItem> {
                 Expanded(
                   child: Container(
                     height: 140,
-                    color: Colors.blue,
+                    color: Colors.grey.shade400,
                     child: Image.network(widget.singleProduct.image),
                   ),
                 ),
@@ -63,19 +63,23 @@ class _SIngleCartItemState extends State<SIngleCartItem> {
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    widget.singleProduct.name,
-                                    style: const TextStyle(
-                                        fontSize: 16, color: Colors.black),
+                                  FittedBox(
+                                    child: Text(
+                                      widget.singleProduct.name,
+                                      style: const TextStyle(
+                                          fontSize: 16, color: Colors.black),
+                                    ),
                                   ),
                                   Row(
                                     children: [
                                       CupertinoButton(
                                         onPressed: () {
-                                          if (quantity >= 1) {
+                                          if (quantity > 1) {
                                             setState(() {
                                               quantity--;
                                             });
+                                            appProvider.updateQuantity(
+                                                widget.singleProduct, quantity);
                                           }
                                         },
                                         padding: EdgeInsets.zero,
@@ -98,6 +102,8 @@ class _SIngleCartItemState extends State<SIngleCartItem> {
                                           setState(() {
                                             quantity++;
                                           });
+                                          appProvider.updateQuantity(
+                                              widget.singleProduct, quantity);
                                         },
                                         padding: EdgeInsets.zero,
                                         child: const CircleAvatar(

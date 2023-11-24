@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-// UserModel UserModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+UserModel UserModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
-// String UserModelToJson(UserModel data) => json.encode(data.toJson());
+String UserModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel {
   String? image;
@@ -29,4 +29,14 @@ class UserModel {
         "name": name,
         "email": email,
       };
+
+  UserModel copyWith({
+    String? name,
+    image,
+  }) =>
+      UserModel(
+          id: id,
+          name: name ?? this.name,
+          image: image ?? this.image,
+          email: email);
 }
