@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:belkis_marketplace/models/product_model/product_model.dart';
 
 class OrderModel {

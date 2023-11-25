@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:belkis_marketplace/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:http/http.dart' as http;
@@ -11,7 +11,7 @@ class StripeHelper {
   Future<bool> makePayment(String amount) async {
     try {
       paymentIntent = await createPaymentIntent(amount, 'ETB');
-      var gpay = PaymentSheetGooglePay(
+      var gpay = const PaymentSheetGooglePay(
           merchantCountryCode: 'US', currencyCode: 'USD', testEnv: true);
 
       //step 2 initializ payment sheet
@@ -30,7 +30,7 @@ class StripeHelper {
       displayPaymentSheet();
       return true;
     } catch (err) {
-      print(err);
+      showMessage(err.toString());
       return false;
     }
   }
@@ -38,10 +38,10 @@ class StripeHelper {
   displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) {
-        print('payment Successfully');
+        showMessage('payment Successfully');
       });
     } catch (e) {
-      print('$e');
+      showMessage('$e');
     }
   }
 

@@ -4,14 +4,12 @@ import 'package:belkis_marketplace/models/product_model/product_model.dart';
 import 'package:belkis_marketplace/provider/app_provider.dart';
 import 'package:belkis_marketplace/widgets/bottom_bar.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CheckOutScreen extends StatefulWidget {
-  ProductModel singleProduct;
-  CheckOutScreen({super.key, required this.singleProduct});
+  final ProductModel singleProduct;
+  const CheckOutScreen({super.key, required this.singleProduct});
 
   @override
   State<CheckOutScreen> createState() => _CheckOutScreenState();
@@ -27,7 +25,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         title: const Text('Checkout'),
         actions: const [
@@ -117,12 +115,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         context,
                         groupValue == 1 ? 'Cash on delivery' : 'payed');
 
-                        appProvider.clearBuyProduct();
+                appProvider.clearBuyProduct();
 
                 if (value) {
-                  Future.delayed(Duration(seconds: 1), () {
+                  Future.delayed(const Duration(seconds: 1), () {
                     Routes.instance
-                        .push(widget: CustomBottomBar(), context: context);
+                        .push(widget: const CustomBottomBar(), context: context);
                   });
                 }
               },

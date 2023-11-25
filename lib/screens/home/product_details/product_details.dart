@@ -4,10 +4,10 @@ import 'package:belkis_marketplace/screens/check_out.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
 import 'package:belkis_marketplace/screens/cart_screen.dart';
-import 'package:belkis_marketplace/screens/favorite_screen.dart';
 import 'package:belkis_marketplace/provider/app_provider.dart';
 import 'package:belkis_marketplace/models/product_model/product_model.dart';
 
@@ -25,6 +25,37 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   int quantity = 1;
 
+  ScrollController? _scrollController;
+  bool _isScrollDown = false;
+  bool _showAppBar = true;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+
+    _scrollController!.addListener(() {
+      if (_scrollController!.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (!_isScrollDown) {
+          setState(() {
+            _isScrollDown = true;
+            _showAppBar = false;
+          });
+        }
+      }
+      if (_scrollController!.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        if (_isScrollDown) {
+          setState(() {
+            _isScrollDown = false;
+            _showAppBar = true;
+          });
+        }
+      }
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     AppProvider appProvider = Provider.of<AppProvider>(
@@ -32,27 +63,29 @@ class _ProductDetailsState extends State<ProductDetails> {
     );
 
     return Scaffold(
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: () {
-              Routes.instance
-                  .push(widget: const CartScreen(), context: context);
-            },
-            icon: const Icon(Icons.shopping_cart),
-          ),
-          IconButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              // Routes.instance
-              //     .push(widget: const FavoriteScreen(), context: context);
-            },
-            icon: const Icon(
-              Icons.favorite,
-            ),
-          ),
-        ],
-      ),
+      appBar: _showAppBar
+          ? AppBar(
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Routes.instance
+                        .push(widget: const CartScreen(), context: context);
+                  },
+                  icon: const Icon(Icons.shopping_cart),
+                ),
+                IconButton(
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                    // Routes.instance
+                    //     .push(widget: const FavoriteScreen(), context: context);
+                  },
+                  icon: const Icon(
+                    Icons.favorite,
+                  ),
+                ),
+              ],
+            )
+          : null,
       body: ListView(
         padding: const EdgeInsets.fromLTRB(12.0, 12, 12, 30),
         children: [
@@ -145,7 +178,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 child: const CircleAvatar(
                   maxRadius: 14,
                   foregroundColor: Colors.white,
-                  backgroundColor: Colors.green,
+                  backgroundColor: Colors.blue,
                   child: Icon(Icons.add),
                 ),
               ),
@@ -192,7 +225,7 @@ class _ProductDetailsState extends State<ProductDetails> {
             ],
           ),
           const SizedBox(
-            height: 12,
+            height: 50,
           ),
         ],
       ),

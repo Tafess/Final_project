@@ -154,18 +154,22 @@ class _HomeState extends State<Home> {
                                                       },
                                                       child: Card(
                                                         color: Colors.white,
-                                                        elevation: 3,
+                                                        elevation: 0,
                                                         shape:
                                                             RoundedRectangleBorder(
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(20),
+                                                                  .circular(10),
                                                         ),
                                                         child: SizedBox(
-                                                          height: 100,
-                                                          width: 100,
-                                                          child: Image.network(
-                                                            category.image,
+                                                          height: 50,
+                                                          width: 50,
+                                                          child: ClipOval(
+                                                            child:
+                                                                Image.network(
+                                                              category.image,
+                                                              fit: BoxFit.cover,
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
@@ -236,11 +240,13 @@ class _HomeState extends State<Home> {
                                                     },
                                                     child: Column(children: [
                                                       SizedBox(
-                                                        height: 70,
+                                                        height: 50,
                                                         width: double.infinity,
-                                                        child: Image.network(
-                                                          singleProduct.image,
-                                                          fit: BoxFit.cover,
+                                                        child: ClipOval(
+                                                          child: Image.network(
+                                                            singleProduct.image,
+                                                            fit: BoxFit.cover,
+                                                          ),
                                                         ),
                                                       ),
                                                       const SizedBox(
@@ -332,14 +338,16 @@ class _HomeState extends State<Home> {
                                                         child:
                                                             Column(children: [
                                                           SizedBox(
-                                                            height: 70,
-                                                            width:
-                                                                double.infinity,
-                                                            child:
-                                                                Image.network(
-                                                              singleProduct
-                                                                  .image,
-                                                              fit: BoxFit.cover,
+                                                            height: 50,
+                                                            width: 50,
+                                                            child: ClipOval(
+                                                              child:
+                                                                  Image.network(
+                                                                singleProduct
+                                                                    .image,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
                                                             ),
                                                           ),
                                                           const SizedBox(

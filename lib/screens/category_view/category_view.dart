@@ -18,6 +18,7 @@ class CategoryView extends StatefulWidget {
 class _CategoryViewState extends State<CategoryView> {
   List<ProductModel> productModelList = [];
   bool isLoding = false;
+  
 
   get categoriesList => null;
   void getCategoyList() async {

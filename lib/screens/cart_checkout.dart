@@ -2,18 +2,15 @@
 
 import 'package:belkis_marketplace/constants/routes.dart';
 import 'package:belkis_marketplace/firebase_helper/firebase_firestore_helper/firebase_firestore_helper.dart';
-import 'package:belkis_marketplace/models/product_model/product_model.dart';
 import 'package:belkis_marketplace/provider/app_provider.dart';
 import 'package:belkis_marketplace/stripe_helper/stripe_helper.dart';
 import 'package:belkis_marketplace/widgets/bottom_bar.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CartItemCheckout extends StatefulWidget {
-  CartItemCheckout({super.key});
+  const CartItemCheckout({super.key});
 
   @override
   State<CartItemCheckout> createState() => _CartItemCheckoutState();
@@ -120,9 +117,9 @@ class _CartItemCheckoutState extends State<CartItemCheckout> {
                   appProvider.clearBuyProduct();
 
                   if (value) {
-                    Future.delayed(Duration(seconds: 1), () {
-                      Routes.instance
-                          .push(widget: CustomBottomBar(), context: context);
+                    Future.delayed(const Duration(seconds: 1), () {
+                      Routes.instance.push(
+                          widget: const CustomBottomBar(), context: context);
                     });
                   }
                 } else {
@@ -131,23 +128,23 @@ class _CartItemCheckoutState extends State<CartItemCheckout> {
                       .round()
                       .toInt();
                   String totalPrice = (value * 100).toString();
-                  print(totalPrice);
+
                   bool isSuccefullPayment = await StripeHelper.instance
                       .makePayment(totalPrice.toString());
-                  // if (isSuccefullPayment) {
-                  //   bool value = await FirebaseFirestoreHelper.instance
-                  //       .uploadOrderedProductFirebase(
-                  //           appProvider.getBuyproductList, context, 'payed');
+                  if (isSuccefullPayment) {
+                    bool value = await FirebaseFirestoreHelper.instance
+                        .uploadOrderedProductFirebase(
+                            appProvider.getBuyproductList, context, 'payed');
 
-                  //   appProvider.clearBuyProduct();
+                    appProvider.clearBuyProduct();
 
-                  //   if (value) {
-                  //     Future.delayed(Duration(seconds: 1), () {
-                  //       Routes.instance
-                  //           .push(widget: CustomBottomBar(), context: context);
-                  //     });
-                  //   }
-                  // }
+                    if (value) {
+                      Future.delayed(const Duration(seconds: 1), () {
+                        Routes.instance.push(
+                            widget: const CustomBottomBar(), context: context);
+                      });
+                    }
+                  }
                 }
               },
             )

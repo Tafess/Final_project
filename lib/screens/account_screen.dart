@@ -22,7 +22,7 @@ class _AccountScreenState extends State<AccountScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         title: const Text('My profile'),
         actions: const [

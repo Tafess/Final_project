@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:belkis_marketplace/constants/constants.dart';
 import 'package:belkis_marketplace/firebase_helper/firebase_firestore_helper/firebase_firestore_helper.dart';
 import 'package:belkis_marketplace/firebase_helper/firebase_storage_helper.dart';

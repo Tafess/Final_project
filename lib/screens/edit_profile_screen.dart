@@ -74,7 +74,7 @@ class _EditProfileState extends State<EditProfile> {
               child: PrimaryButton(
                   onPressed: () async {
                     UserModel userModel = appProvider.getUserInformation
-                        .copyWith(image: textEditingController.text);
+                        .copyWith(name: textEditingController.text);
                     appProvider.updateUserInfoFirebase(
                         context, userModel, image);
                   },

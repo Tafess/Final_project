@@ -7,7 +7,6 @@ import 'package:belkis_marketplace/models/product_model/product_model.dart';
 import 'package:belkis_marketplace/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -77,7 +76,7 @@ class FirebaseFirestoreHelper {
       for (var element in list) {
         totalPrice += element.price * element.quantity!;
       }
-      DocumentReference documentReference = await _firebaseFirestore
+      DocumentReference documentReference = _firebaseFirestore
           .collection('userOrders')
           .doc(FirebaseAuth.instance.currentUser!.uid)
           .collection('orders')
@@ -112,7 +111,7 @@ class FirebaseFirestoreHelper {
   }
 
   ///////// get order user //////
-  ///
+  
 
   Future<List<OrderModel>> getUserOrder() async {
     try {

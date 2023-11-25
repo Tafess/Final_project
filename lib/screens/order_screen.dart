@@ -4,21 +4,60 @@ import 'package:belkis_marketplace/firebase_helper/firebase_firestore_helper/fir
 import 'package:belkis_marketplace/models/order_model.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-class OrderScreen extends StatelessWidget {
+class OrderScreen extends StatefulWidget {
   const OrderScreen({super.key});
+
+  @override
+  State<OrderScreen> createState() => _OrderScreenState();
+}
+
+class _OrderScreenState extends State<OrderScreen> {
+  ScrollController? _scrollController;
+  bool _isScrollDown = false;
+  bool _showAppBar = true;
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+
+    _scrollController!.addListener(() {
+      if (_scrollController!.position.userScrollDirection ==
+          ScrollDirection.reverse) {
+        if (!_isScrollDown) {
+          setState(() {
+            _isScrollDown = true;
+            _showAppBar = false;
+          });
+        }
+      }
+      if (_scrollController!.position.userScrollDirection ==
+          ScrollDirection.forward) {
+        if (_isScrollDown) {
+          setState(() {
+            _isScrollDown = false;
+            _showAppBar = true;
+          });
+        }
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.green,
-        foregroundColor: Colors.white,
-        title: const Text('Orders'),
-        actions: const [
-          Icon(Icons.person),
-        ],
-      ),
+      appBar: _showAppBar
+          ? AppBar(
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              title: const Text('Orders'),
+              actions: const [
+                Icon(Icons.person),
+              ],
+            )
+          : null,
       body: FutureBuilder(
           future: FirebaseFirestoreHelper.instance.getUserOrder(),
           builder: (context, snapshot) {

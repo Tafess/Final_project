@@ -1,10 +1,9 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'package:belkis_marketplace/constants/constants.dart';
 import 'package:belkis_marketplace/constants/routes.dart';
 import 'package:belkis_marketplace/firebase_helper/firebase_auth_helper/firebase_auth_helper.dart';
 import 'package:belkis_marketplace/screens/auth_ui/login/login.dart';
-import 'package:belkis_marketplace/screens/home/home.dart';
 import 'package:belkis_marketplace/widgets/bottom_bar.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
 import 'package:belkis_marketplace/widgets/top_titles/top_titles.dart';
@@ -46,7 +45,6 @@ class _SignUpState extends State<SignUp> {
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
                   hintText: 'Name ',
-                  labelText: 'Enter your name ',
                   labelStyle: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -62,7 +60,6 @@ class _SignUpState extends State<SignUp> {
                 keyboardType: TextInputType.emailAddress,
                 decoration: InputDecoration(
                   hintText: 'E-mail ',
-                  labelText: 'Enter your email address',
                   labelStyle: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -78,7 +75,6 @@ class _SignUpState extends State<SignUp> {
                 keyboardType: TextInputType.phone,
                 decoration: InputDecoration(
                   hintText: 'Phone Number',
-                  labelText: 'Enter Phone Number',
                   labelStyle: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
@@ -94,7 +90,6 @@ class _SignUpState extends State<SignUp> {
                 obscureText: isShowPassword,
                 decoration: InputDecoration(
                   hintText: 'Password',
-                  labelText: 'Enter your password',
                   labelStyle: TextStyle(
                       color: Colors.black,
                       fontSize: 20,

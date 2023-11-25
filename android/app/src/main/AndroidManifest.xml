@@ -3,7 +3,7 @@
 
     
 
-        android:label="belkis_marketplace"
+        android:label="belkis"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -2,7 +2,6 @@ import 'package:belkis_marketplace/constants/constants.dart';
 import 'package:belkis_marketplace/constants/routes.dart';
 import 'package:belkis_marketplace/provider/app_provider.dart';
 import 'package:belkis_marketplace/screens/cart_checkout.dart';
-import 'package:belkis_marketplace/screens/check_out.dart';
 import 'package:belkis_marketplace/screens/single_cart.dart';
 import 'package:belkis_marketplace/widgets/primary_button/primary_button.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +22,7 @@ class _CartScreenState extends State<CartScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.blue,
         foregroundColor: Colors.white,
         title: const Text('My cart'),
         actions: const [
@@ -69,8 +68,8 @@ class _CartScreenState extends State<CartScreen> {
                     if (appProvider.getBuyproductList.isEmpty) {
                       showMessage('Cart is empty');
                     } else {
-                      Routes.instance
-                          .push(widget: CartItemCheckout(), context: context);
+                      Routes.instance.push(
+                          widget: const CartItemCheckout(), context: context);
                     }
                   },
                 )
